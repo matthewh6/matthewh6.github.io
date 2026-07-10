@@ -1,89 +1,91 @@
-/* ===== Matthew Hong — warm minimal (IBM Plex) ===== */
-:root{
-  --bg:#f6f2e9; --card:#fbf8f1; --ink:#241f1a; --ink2:#4a4339; --mut:#9b9384;
-  --line:#e1d9c9; --accent:#bf5700; --accent2:#9c4700;
-  --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
-  --mono:'IBM Plex Mono',ui-monospace,monospace;
-}
-[data-theme="dark"]{
-  --bg:#1b1813; --card:#241f19; --ink:#efe7d8; --ink2:#cdc3b2; --mut:#8c8475;
-  --line:#3a342a; --accent:#e3781f; --accent2:#f0913a;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
-body{font-family:var(--sans);background:var(--bg);color:var(--ink2);line-height:1.62;font-size:15.5px;
-  -webkit-font-smoothing:antialiased;min-height:100vh}
-a{color:var(--accent2);text-decoration:none;transition:color .14s}
-a:hover{color:var(--accent)}
-strong{color:var(--ink);font-weight:600}
-.wrap{max-width:760px;margin:0 auto;padding:54px 28px 96px}
+/* ===== Matthew Hong — page layout =====
+   Design tokens + reusable components: theme/theme.css
+   Font faces: fonts.css
+   This file holds base element styles and page-specific layout only,
+   built entirely on the theme tokens (no hardcoded colors/fonts). */
 
-/* theme toggle */
-.top{display:flex;justify-content:flex-end;margin-bottom:8px}
-.tt{font-family:var(--mono);font-size:.72rem;color:var(--mut);background:none;border:1px solid var(--line);
-  border-radius:20px;padding:5px 12px;cursor:pointer;transition:border-color .14s,color .14s}
-.tt:hover{border-color:var(--accent);color:var(--accent)}
+/* base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-body);
+  line-height: var(--leading);
+  font-size: var(--fs-body);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+a { color: var(--accent-strong); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent); }
+strong { color: var(--text); font-weight: 600; }
+
+.wrap { max-width: 760px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg) var(--space-4xl); }
+
+/* theme toggle (uses .pill from theme.css) */
+.top { display: flex; justify-content: flex-end; margin-bottom: var(--space-xs); }
+.tt { font-size: var(--fs-label); }
 
 /* header */
-header{display:grid;grid-template-columns:96px 1fr;gap:24px;align-items:center}
-.photo{width:96px;height:96px;border-radius:50%;border:1px solid var(--line);overflow:hidden;
-  background:var(--card);flex-shrink:0}
-.photo img{width:100%;height:100%;object-fit:cover;display:block}
-h1{font-weight:600;font-size:1.8rem;color:var(--ink);letter-spacing:-.015em;line-height:1.05}
-.social{display:flex;gap:15px;margin-top:11px;font-family:var(--mono);font-size:.76rem;flex-wrap:wrap}
-.social a{color:var(--mut)}.social a:hover{color:var(--accent)}
-.email{font-family:var(--mono);font-size:.74rem;color:var(--mut);margin-top:7px}
+header { display: grid; grid-template-columns: 96px 1fr; gap: var(--space-lg); align-items: center; }
+.photo {
+  width: 96px; height: 96px; border-radius: 50%; border: 1px solid var(--border);
+  overflow: hidden; background: var(--surface); flex-shrink: 0;
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+h1 { font-weight: 600; font-size: var(--fs-name); color: var(--text); letter-spacing: var(--tracking-tight); line-height: 1.05; }
+.social { display: flex; gap: var(--space-md); margin-top: 11px; font-family: var(--font-mono); font-size: var(--fs-caption); flex-wrap: wrap; }
+.social a { color: var(--text-muted); }
+.social a:hover { color: var(--accent); }
+.email { font-family: var(--font-mono); font-size: var(--fs-caption); color: var(--text-muted); margin-top: 7px; }
 
-.bio{margin-top:24px}.bio p+p{margin-top:.7em}
+.bio { margin-top: var(--space-lg); }
+.bio p + p { margin-top: 0.7em; }
 
 /* sections */
-.sec{margin-top:46px}
-.sechead{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;color:var(--mut);
-  margin:0 0 18px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.sec { margin-top: var(--space-2xl); }
+.sechead { margin: 0 0 var(--space-md); padding-bottom: 9px; border-bottom: 1px solid var(--border); }
 
 /* news */
-.news{display:flex;flex-direction:column;gap:10px}
-.ni{display:grid;grid-template-columns:88px 1fr;gap:14px;font-size:.95rem;line-height:1.5}
-.ni .d{font-family:var(--mono);font-size:.73rem;color:var(--mut);padding-top:2px}
-.ntext{color:var(--ink2)}
+.news { display: flex; flex-direction: column; gap: var(--space-sm); }
+.ni { display: grid; grid-template-columns: 88px 1fr; gap: 14px; font-size: var(--fs-meta); line-height: 1.5; }
+.ni .d { font-family: var(--font-mono); font-size: var(--fs-label); color: var(--text-muted); padding-top: 2px; }
+.ntext { color: var(--text-body); }
 
 /* publications */
-.pub{display:grid;grid-template-columns:128px 1fr;gap:20px;padding:16px 0;border-bottom:1px solid var(--line);align-items:center}
-.pub:last-child{border-bottom:none}
-.thumb{width:128px;height:80px;border-radius:6px;background:var(--card);border:1px solid var(--line);
-  overflow:hidden;display:flex;align-items:center;justify-content:center}
-.thumb-media{width:100%;height:100%;object-fit:cover;display:block}
-.ven{font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:500;margin-bottom:3px;letter-spacing:.02em}
-.ven a{color:inherit;text-decoration:none}.ven a:hover{text-decoration:underline}
-.ven .conf{color:var(--accent)}        /* conference = the hero */
-.ven .wk{color:var(--mut)}             /* workshops recede */
-.ven .oral{color:var(--accent);font-weight:700}  /* oral = earned, by weight not hue */
-.ven .sep,.ven .status{color:var(--mut)}
-.ptitle{font-weight:600;color:var(--ink);font-size:1.02rem;line-height:1.32;letter-spacing:-.005em;display:inline-block}
-a.ptitle:hover{color:var(--accent)}
-.pauth{font-size:.86rem;color:var(--mut);margin-top:3px;line-height:1.5}
-.pauth .me{color:var(--ink);font-weight:600}
-.plinks{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
-.pl{font-family:var(--mono);font-size:.69rem;padding:3px 9px;border-radius:20px;border:1px solid var(--line);
-  color:var(--ink2);transition:border-color .14s,color .14s}
-.pl:hover{border-color:var(--accent);color:var(--accent)}
+.pub {
+  display: grid; grid-template-columns: 128px 1fr; gap: var(--space-lg);
+  padding: var(--space-md) 0; border-bottom: 1px solid var(--border); align-items: center;
+}
+.pub:last-child { border-bottom: none; }
+.thumb { width: 128px; height: 80px; display: flex; align-items: center; justify-content: center; }  /* container styling via .media */
+.thumb-media { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ven { font-family: var(--font-mono); font-size: var(--fs-fine); color: var(--accent); font-weight: 500; margin-bottom: 3px; letter-spacing: 0.02em; }
+.ven a { color: inherit; text-decoration: none; }
+.ven a:hover { text-decoration: underline; }
+.ven .conf { color: var(--accent); }              /* conference = the hero */
+.ven .wk { color: var(--text-muted); }             /* workshops recede */
+.ven .oral { color: var(--accent); font-weight: 700; }  /* oral = earned, by weight not hue */
+.ven .sep, .ven .status { color: var(--text-muted); }
+.ptitle { font-weight: 600; color: var(--text); font-size: var(--fs-title); line-height: 1.32; letter-spacing: -0.005em; display: inline-block; }
+a.ptitle:hover { color: var(--accent); }
+.pauth { font-size: var(--fs-sm); color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+.pauth .me { color: var(--text); font-weight: 600; }
+.plinks { display: flex; gap: 7px; margin-top: 9px; flex-wrap: wrap; }
+/* .pl uses .pill .pill--tag from theme.css */
 
-footer{margin-top:60px;font-family:var(--mono);font-size:.72rem;color:var(--mut);text-align:center}
+footer { margin-top: var(--space-3xl); font-family: var(--font-mono); font-size: var(--fs-label); color: var(--text-muted); text-align: center; }
 /* colophon — Klee color-grid mark (shares the favicon's earthy triad) */
-footer .klee{display:inline-flex;gap:2px;vertical-align:middle;margin-right:9px}
-footer .klee i{width:7px;height:7px;display:block;border-radius:1px}
-footer .klee i:nth-child(1){background:var(--accent)}
-footer .klee i:nth-child(2){background:#cda866}
-footer .klee i:nth-child(3){background:#87937a}
-
-/* a11y */
-a:focus-visible,.pl:focus-visible,button:focus-visible,.tt:focus-visible{
-  outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+footer .klee { display: inline-flex; gap: 2px; vertical-align: middle; margin-right: 9px; }
+footer .klee i { width: 7px; height: 7px; display: block; border-radius: 1px; }
+footer .klee i:nth-child(1) { background: var(--klee-1); }
+footer .klee i:nth-child(2) { background: var(--klee-2); }
+footer .klee i:nth-child(3) { background: var(--klee-3); }
 
 /* responsive */
-@media(max-width:600px){
-  header{grid-template-columns:1fr;gap:16px;justify-items:start}
-  .pub{grid-template-columns:1fr;gap:12px}
-  .thumb{width:100%;max-width:260px;height:auto;aspect-ratio:16/10}
-  .ni{grid-template-columns:74px 1fr;gap:12px}
+@media (max-width: 600px) {
+  header { grid-template-columns: 1fr; gap: var(--space-md); justify-items: start; }
+  .pub { grid-template-columns: 1fr; gap: var(--space-sm); }
+  .thumb { width: 100%; max-width: 260px; height: auto; aspect-ratio: 16/10; }
+  .ni { grid-template-columns: 74px 1fr; gap: var(--space-sm); }
 }

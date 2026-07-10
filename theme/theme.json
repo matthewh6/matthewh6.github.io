@@ -1,0 +1,73 @@
+{
+  "$comment": "Design tokens for matthewh6.github.io. Mirrors theme/theme.css :root and [data-theme=\"dark\"]. Source of truth is theme.css; keep this in sync when values change. Not consumed at runtime — reference for tooling and future pages.",
+  "name": "Matthew Hong — warm minimal",
+  "color": {
+    "light": {
+      "bg": "#f6f2e9",
+      "surface": "#fbf8f1",
+      "text": "#241f1a",
+      "text-body": "#4a4339",
+      "text-muted": "#9b9384",
+      "border": "#e1d9c9",
+      "accent": "#bf5700",
+      "accent-strong": "#9c4700",
+      "accent-light": "#f0e3d2"
+    },
+    "dark": {
+      "bg": "#1b1813",
+      "surface": "#241f19",
+      "text": "#efe7d8",
+      "text-body": "#cdc3b2",
+      "text-muted": "#8c8475",
+      "border": "#3a342a",
+      "accent": "#e3781f",
+      "accent-strong": "#f0913a",
+      "accent-light": "#3a2a18"
+    },
+    "klee": {
+      "1": "#bf5700",
+      "2": "#cda866",
+      "3": "#87937a"
+    }
+  },
+  "typography": {
+    "font-sans": "'IBM Plex Sans', system-ui, -apple-system, sans-serif",
+    "font-mono": "'IBM Plex Mono', ui-monospace, monospace",
+    "scale": {
+      "fs-name": "1.8rem",
+      "fs-title": "1.02rem",
+      "fs-meta": "0.95rem",
+      "fs-body": "15.5px",
+      "fs-sm": "0.86rem",
+      "fs-caption": "0.76rem",
+      "fs-label": "0.72rem",
+      "fs-fine": "0.70rem"
+    },
+    "leading": 1.62,
+    "tracking-tight": "-0.015em",
+    "tracking-label": "0.2em"
+  },
+  "space": {
+    "2xs": "4px",
+    "xs": "8px",
+    "sm": "12px",
+    "md": "16px",
+    "lg": "24px",
+    "xl": "32px",
+    "2xl": "48px",
+    "3xl": "64px",
+    "4xl": "80px"
+  },
+  "radius": {
+    "sm": "6px",
+    "base": "12px",
+    "pill": "20px"
+  },
+  "shadow": {
+    "sm": "0 1px 2px rgba(36, 31, 26, 0.04)",
+    "base": "0 4px 16px rgba(36, 31, 26, 0.06)"
+  },
+  "motion": {
+    "transition": "0.14s ease"
+  }
+}
