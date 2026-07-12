@@ -1,0 +1,71 @@
+{
+  "$schema": "./theme.schema.json",
+  "name": "TMRL Theme",
+  "description": "Single source of truth for the TMRL visual system — website, talk slides, and tweet/thread media all read from this file. Mirrors the canonical CSS :root in tmrl/index.html.",
+  "version": "1.0.0",
+
+  "color": {
+    "surface": {
+      "bg":         { "hex": "#ebe8e0", "use": "page base (concrete, warm grey-beige)" },
+      "panel":      { "hex": "#f5f3ec", "use": "cards / figure canvas / matte letterbox" },
+      "panel-tint": { "hex": "#e3dfd2", "use": "subtle inset panels" },
+      "bg-deep":    { "hex": "#d9d4c3", "use": "deeper section bands" }
+    },
+    "ink": {
+      "ink":       { "hex": "#1c1c19", "use": "primary text / axes / edges (warm near-black, never #000)" },
+      "ink-soft":  { "hex": "#383832", "use": "secondary text" },
+      "ink-muted": { "hex": "#7a7872", "use": "captions / muted labels / grid-adjacent" }
+    },
+    "emerald": {
+      "_role": "PRIMARY — 'ours' / CSP / TMRL across every figure",
+      "em-deep":  { "hex": "#1d4530" },
+      "em":       { "hex": "#2a5d40", "use": "primary brand + interactive active states" },
+      "em-mid":   { "hex": "#4a8068" },
+      "em-glow":  { "hex": "#8db59b" },
+      "em-light": { "hex": "#d8e3dc" }
+    },
+    "series": {
+      "_role": "baseline / categorical accents — keep identity stable across ALL figures",
+      "amber":      { "hex": "#a67a3a", "soft": "#c79a5a", "light": "#ecddc0", "use": "aged bronze" },
+      "walnut":     { "hex": "#6b4a30", "soft": "#8a6a4a", "light": "#e8dec8" },
+      "coral":      { "hex": "#c87a78" },
+      "periwinkle": { "hex": "#6e7ec7" },
+      "olive":      { "hex": "#8a7e3e" }
+    },
+    "rule": {
+      "rule":       { "hex": "#1c1c19", "use": "hard rules" },
+      "rule-soft":  { "hex": "#c8c2b0" },
+      "rule-faint": { "hex": "#ddd9cc", "use": "light grid lines" }
+    }
+  },
+
+  "prop_cycle": ["#2a5d40", "#a67a3a", "#6e7ec7", "#6b4a30", "#c87a78", "#8a7e3e"],
+
+  "series_identity": {
+    "_comment": "fixed series->color map; reuse everywhere so a line means the same thing in every chart",
+    "TMRL":   "#2a5d40",
+    "CSP":    "#2a5d40",
+    "ours":   "#2a5d40",
+    "PostBC": "#a67a3a",
+    "DSRL":   "#6e7ec7",
+    "BC":     "#6e7ec7",
+    "RLPD":   "#6b4a30",
+    "SPiRL":  "#c87a78",
+    "RND":    "#8a7e3e"
+  },
+
+  "shadow": {
+    "soft":       "0 2px 8px rgba(28, 28, 25, 0.06)",
+    "card":       "0 6px 18px rgba(28, 28, 25, 0.10)",
+    "card-deep":  "0 18px 38px rgba(28, 28, 25, 0.16)",
+    "emerald":    "0 8px 26px rgba(29, 69, 48, 0.22)"
+  },
+
+  "radius": { "card": "14px", "inset": "10px" },
+
+  "font": {
+    "display": { "family": "Fraunces",      "fallback": "Georgia, serif",     "use": "serif display / titles" },
+    "mono":    { "family": "JetBrains Mono", "fallback": "monospace",          "use": "labels / tick labels / mono UI" },
+    "body":    { "family": "Pretendard",     "fallback": "system-ui, sans-serif", "use": "body copy" }
+  }
+}

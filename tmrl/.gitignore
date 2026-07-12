@@ -1,0 +1,5 @@
+.DS_Store
+.claude/
+fig_tools/
+static/figures/originals/
+static/videos/originals/

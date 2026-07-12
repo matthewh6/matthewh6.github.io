@@ -1,0 +1,7 @@
+# build scratch — all regenerable via _build/make.sh
+_build/node_modules/
+frames/
+frames_dial/
+frames_bar/
+frames_cream/
+out/

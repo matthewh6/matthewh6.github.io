@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TMRL learns — frame render</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;}
+  *{box-sizing:border-box;}
+  body{
+    width:1280px;height:720px;overflow:hidden;
+    background:linear-gradient(168deg,#1d4530 0%,#123121 100%);
+    color:#e3ece6;
+    font-family:'JetBrains Mono',monospace;
+    position:relative;
+  }
+  body::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse 60% 44% at 100% -6%, rgba(141,181,155,0.16) 0%, transparent 62%);
+  }
+  .stage{
+    position:relative;z-index:1;height:100%;
+    display:flex;align-items:center;gap:58px;padding:0 64px;
+  }
+
+  /* ── left: rollout frame + task instruction ── */
+  .left{width:520px;flex:none;}
+  .frame-box{
+    border:1px solid rgba(255,255,255,0.18);border-radius:14px;
+    overflow:hidden;background:#000;line-height:0;box-shadow:0 20px 46px rgba(0,0,0,0.44);
+  }
+  .frame-box img{width:520px;height:441px;object-fit:cover;display:block;}
+  .instr{
+    text-align:center;font-family:'Fraunces',serif;font-style:italic;font-size:21px;
+    color:#cfe0d6;margin:20px 4px 0;line-height:1.36;
+  }
+
+  /* ── right: sigma readout + chart ── */
+  .right{flex:1;min-width:0;}
+  .sigma-val{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:60px;line-height:1;
+    letter-spacing:-0.01em;font-variant-numeric:tabular-nums;
+    font-feature-settings:"tnum" 1,"frac" 0;margin-bottom:14px;
+  }
+  .sigma-val .eq{color:rgba(227,236,230,0.34);font-weight:400;}
+  #chart{width:100%;height:auto;display:block;overflow:visible;}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="left">
+    <div class="frame-box">
+      <img id="frame-img" src="../figures/shrimp_frames/frame_00.jpg" alt="">
+    </div>
+    <div class="instr">&ldquo;pick up the shrimp and put it into the white drawer&rdquo;</div>
+  </div>
+  <div class="right">
+    <div class="sigma-val" id="sigma-val"><span class="eq">&sigma; =</span> 0.01</div>
+    <svg id="chart" viewBox="0 0 576 372" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+</div>
+
+<script>
+  /* per-action-chunk sigma chosen by the converged policy */
+  var COND_T = [0.01, 0.59, 0.60, 0.00, 0.04, 0.00, 0.26, 0.16, 0.09, 0.36];
+  var N = COND_T.length;
+
+  var SVG_W = 576, SVG_H = 372;
+  var PAD = {left:44, right:18, top:42, bottom:24};
+  var cW = SVG_W - PAD.left - PAD.right;
+  var cH = SVG_H - PAD.top - PAD.bottom;
+  var TEAL = '#5dcfa8', ORANGE = '#f0a060', SAND = '#d8d59a';
+
+  function xPos(i){ return PAD.left + (i/(N-1))*cW; }
+  function yPos(v){ return PAD.top + (1-v)*cH; }
+  function pad2(n){ return String(n).padStart(2,'0'); }
+  function lerp(a,b,f){ return a+(b-a)*f; }
+
+  /* the rollout, split into three parts */
+  var PHASES = [
+    {key:'reach', label:'reach', start:0,   end:2.5, critical:false},
+    {key:'pick',  label:'pick',  start:2.5, end:5.5, critical:true },
+    {key:'place', label:'place', start:5.5, end:N-1, critical:false}
+  ];
+  function phaseAt(t){
+    for(var i=0;i<PHASES.length;i++){ if(t < PHASES[i].end) return PHASES[i]; }
+    return PHASES[PHASES.length-1];
+  }
+
+  var MONO = 'JetBrains Mono,monospace';
+
+  function buildStatic(){
+    var svg = document.getElementById('chart');
+    var h = '';
+    h += '<defs><linearGradient id="ag" x1="0" x2="0" y1="0" y2="1">'
+       + '<stop offset="0%" stop-color="#5dcfa8" stop-opacity="0.34"/>'
+       + '<stop offset="100%" stop-color="#5dcfa8" stop-opacity="0.02"/></linearGradient></defs>';
+
+    /* three phase bands + labels */
+    PHASES.forEach(function(ph){
+      var x1 = PAD.left + (ph.start/(N-1))*cW;
+      var x2 = PAD.left + (ph.end/(N-1))*cW;
+      h += '<rect id="band-'+ph.key+'" x="'+x1+'" y="'+PAD.top+'" width="'+(x2-x1)+'" height="'+cH+'" fill="rgba(255,255,255,0.022)"/>';
+      h += '<text id="bandlbl-'+ph.key+'" x="'+((x1+x2)/2)+'" y="'+(PAD.top-16)+'" fill="rgba(234,243,236,0.40)" '
+         + 'font-size="15" font-family="'+MONO+'" letter-spacing="0.16em" text-anchor="middle">'+ph.label+'</text>';
+      if(ph.start>0){
+        h += '<line x1="'+x1+'" y1="'+(PAD.top-6)+'" x2="'+x1+'" y2="'+(PAD.top+cH)+'" stroke="rgba(255,255,255,0.10)" stroke-width="1" stroke-dasharray="2,4"/>';
+      }
+    });
+
+    /* minimal y axis: sigma 0..1 */
+    h += '<line x1="'+PAD.left+'" y1="'+PAD.top+'" x2="'+PAD.left+'" y2="'+(PAD.top+cH)+'" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>';
+    h += '<line x1="'+(PAD.left-5)+'" y1="'+yPos(1)+'" x2="'+PAD.left+'" y2="'+yPos(1)+'" stroke="'+ORANGE+'" stroke-width="2"/>';
+    h += '<line x1="'+(PAD.left-5)+'" y1="'+yPos(0)+'" x2="'+PAD.left+'" y2="'+yPos(0)+'" stroke="'+TEAL+'" stroke-width="2"/>';
+    h += '<text x="'+(PAD.left-11)+'" y="'+(yPos(1)+5)+'" fill="rgba(240,160,96,0.85)" font-size="13" font-family="'+MONO+'" text-anchor="end">1</text>';
+    h += '<text x="'+(PAD.left-11)+'" y="'+(yPos(0)+5)+'" fill="rgba(93,207,168,0.9)" font-size="13" font-family="'+MONO+'" text-anchor="end">0</text>';
+    h += '<text x="'+(PAD.left-11)+'" y="'+(yPos(0.5)+5)+'" fill="rgba(227,236,230,0.5)" font-size="15" font-family="'+MONO+'" font-style="italic" text-anchor="end">&sigma;</text>';
+
+    h += '<g id="dyn"></g>';
+    svg.insertAdjacentHTML('beforeend', h);
+  }
+
+  function colOf(sig){
+    if(sig < 0.18) return TEAL;
+    if(sig > 0.42) return ORANGE;
+    return SAND;
+  }
+
+  function render(t){
+    t = Math.max(0, Math.min(N-1, t));
+    var lo = Math.floor(t), hi = Math.min(N-1, lo+1), f = t-lo;
+    var sig = lerp(COND_T[lo], COND_T[hi], f);
+    var cx = xPos(t), cy = yPos(sig);
+    var col = colOf(sig);
+
+    /* progressive curve + area + dots + cursor */
+    var pts = [];
+    for(var k=0;k<=lo;k++){ pts.push([xPos(k), yPos(COND_T[k])]); }
+    if(f>0) pts.push([cx, cy]);
+
+    var lineD = '', areaD = 'M '+pts[0][0].toFixed(2)+' '+yPos(0);
+    pts.forEach(function(p,i){
+      lineD += (i===0?'M ':'L ') + p[0].toFixed(2) + ' ' + p[1].toFixed(2) + ' ';
+      areaD += ' L '+p[0].toFixed(2)+' '+p[1].toFixed(2);
+    });
+    areaD += ' L '+pts[pts.length-1][0].toFixed(2)+' '+yPos(0)+' Z';
+
+    var dots = '';
+    for(var d=0; d<=lo; d++){
+      dots += '<circle cx="'+xPos(d)+'" cy="'+yPos(COND_T[d])+'" r="4.4" fill="#0f3a26" stroke="'+TEAL+'" stroke-width="2"/>';
+    }
+
+    var dyn = '';
+    dyn += '<path d="'+areaD+'" fill="url(#ag)"/>';
+    dyn += '<path d="'+lineD+'" fill="none" stroke="'+TEAL+'" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/>';
+    dyn += dots;
+    dyn += '<line x1="'+cx.toFixed(2)+'" y1="'+PAD.top+'" x2="'+cx.toFixed(2)+'" y2="'+(PAD.top+cH)+'" stroke="rgba(255,255,255,0.28)" stroke-width="1" stroke-dasharray="3,3"/>';
+    dyn += '<circle cx="'+cx.toFixed(2)+'" cy="'+cy.toFixed(2)+'" r="9" fill="#fff" stroke="'+col+'" stroke-width="3.6" style="filter:drop-shadow(0 0 9px '+col+'cc)"/>';
+    document.getElementById('dyn').innerHTML = dyn;
+
+    /* highlight the active phase band */
+    var ph = phaseAt(t);
+    PHASES.forEach(function(p){
+      var on = (p.key === ph.key);
+      var band = document.getElementById('band-'+p.key);
+      var lbl  = document.getElementById('bandlbl-'+p.key);
+      var tint = p.critical ? '93,207,168' : '240,160,96';
+      band.setAttribute('fill', on ? 'rgba('+tint+',0.13)' : 'rgba(255,255,255,0.022)');
+      lbl.setAttribute('fill', on ? (p.critical?TEAL:ORANGE) : 'rgba(234,243,236,0.40)');
+      lbl.setAttribute('font-weight', on ? '700' : '400');
+    });
+
+    /* shrimp rollout frame */
+    var fi = Math.max(0, Math.min(N-1, Math.round(t)));
+    var img = document.getElementById('frame-img');
+    var want = '../figures/shrimp_frames/frame_'+pad2(fi)+'.jpg';
+    if(img.getAttribute('src') !== want) img.setAttribute('src', want);
+
+    /* sigma readout */
+    var sv = document.getElementById('sigma-val');
+    sv.innerHTML = '<span class="eq">&sigma; =</span> ' + sig.toFixed(2);
+    sv.style.color = col;
+  }
+
+  buildStatic();
+
+  function qparam(name){
+    var m = location.search.match(new RegExp('[?&]'+name+'=([-0-9.]+)'));
+    return m ? m[1] : null;
+  }
+  var t0 = qparam('t'); t0 = (t0===null) ? 0 : parseFloat(t0);
+  render(t0);
+
+  /* signal readiness once fonts + the current shrimp frame have loaded */
+  window.__ready = false;
+  function markReady(){ window.__ready = true; document.body.setAttribute('data-ready','1'); }
+  Promise.all([
+    document.fonts ? document.fonts.ready : Promise.resolve(),
+    new Promise(function(res){
+      var im = document.getElementById('frame-img');
+      if(im.complete && im.naturalWidth>0) return res();
+      im.onload = im.onerror = res;
+    })
+  ]).then(function(){ requestAnimationFrame(function(){ requestAnimationFrame(markReady); }); });
+
+  window.__render = render;
+</script>
+</body>
+</html>

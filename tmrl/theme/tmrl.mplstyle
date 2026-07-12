@@ -1,0 +1,62 @@
+# TMRL matplotlib style — single source of truth for paper/site/tweet plots.
+# Mirrors tmrl/theme/theme.json. Use with:  plt.style.use("theme/tmrl.mplstyle")
+# For a transparent canvas (page cream shows through) instead of the cream panel,
+# override at save time: fig.savefig(..., transparent=True)  OR set the *.facecolor
+# entries below to 'none'.
+
+# ── canvas: cream panel, never pure white ──
+figure.facecolor : f5f3ec
+axes.facecolor   : f5f3ec
+savefig.facecolor: f5f3ec
+savefig.edgecolor: f5f3ec
+savefig.dpi      : 200
+figure.dpi       : 120
+
+# ── ink: warm near-black, never pure #000000 ──
+text.color        : 1c1c19
+axes.labelcolor   : 1c1c19
+axes.edgecolor    : 1c1c19
+xtick.color       : 1c1c19
+ytick.color       : 1c1c19
+axes.titlecolor   : 1c1c19
+
+# ── series prop_cycle: emerald(ours) then accents ──
+axes.prop_cycle : cycler('color', ['2a5d40', 'a67a3a', '6e7ec7', '6b4a30', 'c87a78', '8a7e3e'])
+
+# ── fonts: JetBrains Mono for labels/ticks, Fraunces serif for titles ──
+font.family       : JetBrains Mono
+font.monospace    : JetBrains Mono, DejaVu Sans Mono, monospace
+font.serif        : Fraunces, Georgia, serif
+mathtext.fontset  : cm
+axes.titlesize    : 15
+axes.labelsize    : 12
+xtick.labelsize   : 10
+ytick.labelsize   : 10
+legend.fontsize   : 10
+
+# ── light grid in rule-faint, soft spines ──
+axes.grid        : True
+grid.color       : ddd9cc
+grid.linewidth   : 0.8
+grid.alpha       : 1.0
+axes.spines.top  : False
+axes.spines.right: False
+axes.linewidth   : 1.0
+axes.axisbelow   : True
+
+# ── lines / markers ──
+lines.linewidth        : 2.4
+lines.markersize       : 6
+lines.markeredgewidth  : 1.2
+lines.solid_capstyle   : round
+
+# ── legend: cream frame, soft edge, no hard black ──
+legend.frameon       : True
+legend.facecolor     : f5f3ec
+legend.edgecolor     : c8c2b0
+legend.framealpha    : 0.9
+legend.borderpad     : 0.6
+
+# ── layout ──
+figure.autolayout    : True
+figure.constrained_layout.use : False
