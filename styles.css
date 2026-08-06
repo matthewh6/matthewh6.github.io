@@ -27,9 +27,9 @@ strong { color: var(--text); font-weight: 600; }
 .tt { font-size: var(--fs-label); }
 
 /* header */
-header { display: grid; grid-template-columns: 96px 1fr; gap: var(--space-lg); align-items: center; }
+header { display: grid; grid-template-columns: 112px 1fr; gap: var(--space-lg); align-items: center; }
 .photo {
-  width: 96px; height: 96px; border-radius: 50%; border: 1px solid var(--border);
+  width: 112px; height: 112px; border-radius: 50%; border: 1px solid var(--border);
   overflow: hidden; background: var(--surface); flex-shrink: 0;
 }
 .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
