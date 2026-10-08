@@ -11,81 +11,124 @@
 
 /* ---------- 1. DESIGN TOKENS ---------- */
 :root {
-  /* — Brand — one accent, used sparingly (UT Austin burnt orange) */
-  --accent:        #bf5700;  /* primary accent: hover, emphasis, active */
-  --accent-strong: #9c4700;  /* darker shade for link text — AA contrast on light bg */
-  --accent-light:  #f0e3d2;  /* soft tint for subtle fills / highlights */
+  /* — Brand — one accent, used sparingly (method green, #0e7e33 — matches paper figures) */
+  --accent: #0e7e33;
+  /* primary accent: hover, emphasis, active — AA contrast on light bg */
+  --accent-strong: #0b6a2b;
+  /* darker shade for link text — AA contrast on light bg */
+  --accent-light: #dcefe0;
+  /* soft tint for subtle fills / highlights */
 
   /* — Surfaces & text (light) — */
-  --bg:          #f6f2e9;  /* page background — warm paper */
-  --surface:     #fbf8f1;  /* cards, media wells, raised areas */
-  --text:        #241f1a;  /* headings, names, strong emphasis */
-  --text-body:   #4a4339;  /* default body copy */
-  --text-muted:  #9b9384;  /* captions, meta, labels */
-  --border:      #e1d9c9;  /* hairlines, dividers, card edges */
+  --bg: #f9f0de;
+  /* page background — warm cream */
+  --surface: #fdf8ee;
+  /* cards, media wells, raised areas */
+  --text: #1a1714;
+  /* headings, names, strong emphasis */
+  --text-body: #2f2b27;
+  /* default body copy */
+  --text-muted: #6b6358;
+  /* captions, meta, labels — warm gray with AA contrast */
+  --border: #eadcc2;
+  /* hairlines, dividers, card edges */
 
-  /* — Decorative Klee triad (favicon + footer colophon) — */
-  --klee-1: var(--accent);
-  --klee-2: #cda866;
-  --klee-3: #87937a;
+  /* — Decorative swatches triad (footer colophon) — */
+  --swatches-1: var(--accent);
+  --swatches-2: #cda866;
+  --swatches-3: #87937a;
 
   /* — Typography — */
+  --font-serif: Palatino, 'Palatino Linotype', 'Book Antiqua', 'URW Palladio L', Georgia, serif;
+  /* main text, name, and publication titles */
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   /* Type scale — distinct roles, not just sizes */
-  --fs-name:    1.8rem;   /* the name (h1) */
-  --fs-title:   1.02rem;  /* entry / publication titles */
-  --fs-meta:    0.95rem;  /* secondary running text (news) */
-  --fs-body:    15.5px;   /* main body copy (set on <body>) */
-  --fs-sm:      0.86rem;  /* author lists, dense body */
-  --fs-caption: 0.76rem;  /* captions, social, email */
-  --fs-label:   0.72rem;  /* section eyebrows, toggle */
-  --fs-fine:    0.70rem;  /* pills, venue tags, fine print */
+  --fs-name: 1.8rem;
+  /* the name (h1) */
+  --fs-title: 17.5px;
+  /* entry titles */
+  --fs-pub-title: 20px;
+  /* publication titles beside the larger media column */
+  --fs-meta: 0.95rem;
+  /* secondary running text (news) */
+  --fs-body: 17px;
+  /* main body copy (set on <body>) */
+  --fs-sm: 0.86rem;
+  /* author lists, dense body */
+  --fs-caption: 0.76rem;
+  /* captions, social, email */
+  --fs-label: 0.72rem;
+  /* section eyebrows, toggle */
+  --fs-fine: 0.70rem;
+  /* pills, venue tags, fine print */
 
-  --leading:         1.62;      /* body line-height */
-  --tracking-tight: -0.015em;   /* large headings */
-  --tracking-label:  0.2em;     /* uppercase eyebrows */
+  --leading: 1.65;
+  /* body line-height */
+  --tracking-tight: -0.015em;
+  /* large headings */
+  --tracking-label: 0.2em;
+  /* uppercase eyebrows */
 
   /* — Spacing scale (4px base rhythm) — */
-  --space-2xs:  4px;
-  --space-xs:   8px;
-  --space-sm:  12px;
-  --space-md:  16px;
-  --space-lg:  24px;
-  --space-xl:  32px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
   --space-2xl: 48px;
   --space-3xl: 64px;
   --space-4xl: 80px;
 
   /* — Radius — */
-  --radius-sm:    6px;   /* media wells, thumbnails */
-  --radius:      12px;   /* cards */
-  --radius-pill: 20px;   /* pills, tags, toggle */
+  --radius-sm: 6px;
+  /* media wells, thumbnails */
+  --radius: 12px;
+  /* cards */
+  --radius-pill: 20px;
+  /* pills, tags, toggle */
 
   /* — Shadows — soft, low-contrast (flat design uses borders by default) — */
-  --shadow-sm: 0 1px 2px rgba(36, 31, 26, 0.04);
-  --shadow:    0 4px 16px rgba(36, 31, 26, 0.06);
+  --shadow-sm: 0 1px 2px rgba(26, 23, 20, 0.04);
+  --shadow: 0 4px 16px rgba(26, 23, 20, 0.06);
 
   /* — Motion — subtle only — */
   --transition: 0.14s ease;
 }
 
+/* Compact homepage scale, following Ge Yan's page proportions. */
+.home {
+  --fs-name: 30px;
+  --fs-pub-title: 17px;
+  --fs-body: 16px;
+  --fs-meta: 14px;
+  --fs-sm: 13px;
+  --fs-caption: 12px;
+  --fs-label: 11.5px;
+  --fs-fine: 11.5px;
+  --space-2xl: 40px;
+  --space-3xl: 56px;
+  --space-4xl: 64px;
+}
+
 /* Dark theme: token overrides only. Set by main.js before first paint. */
 [data-theme="dark"] {
-  --accent:        #e3781f;
-  --accent-strong: #f0913a;  /* lighter shade reads better on dark bg */
-  --accent-light:  #3a2a18;
+  --accent: #3fae63;
+  --accent-strong: #4cc374;
+  /* lighter shade reads better on dark bg */
+  --accent-light: #173524;
 
-  --bg:         #1b1813;
-  --surface:    #241f19;
-  --text:       #efe7d8;
-  --text-body:  #cdc3b2;
-  --text-muted: #8c8475;
-  --border:     #3a342a;
+  --bg: #1a1814;
+  --surface: #231f1a;
+  --text: #efe8da;
+  --text-body: #d6cfc2;
+  --text-muted: #9a9387;
+  --border: #36312a;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.30);
-  --shadow:    0 4px 16px rgba(0, 0, 0, 0.40);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.40);
 }
 
 /* ---------- 2. REUSABLE COMPONENTS ---------- */
@@ -105,8 +148,16 @@
   cursor: pointer;
   transition: border-color var(--transition), color var(--transition);
 }
-.pill:hover { border-color: var(--accent); color: var(--accent); }
-.pill--tag  { padding: 3px 9px; color: var(--text-body); }
+
+.pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pill--tag {
+  padding: 3px 9px;
+  color: var(--text-body);
+}
 
 /* Card — rounded surface with soft edge. For grouped/raised content.
    Add `.card--raised` to opt into the soft shadow. */
@@ -116,7 +167,10 @@
   border-radius: var(--radius);
   padding: var(--space-lg);
 }
-.card--raised { box-shadow: var(--shadow); }
+
+.card--raised {
+  box-shadow: var(--shadow);
+}
 
 /* Media — rounded image/video container that clips its contents.
    Pair with fixed dimensions from the page layer. */

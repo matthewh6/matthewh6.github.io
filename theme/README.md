@@ -37,20 +37,24 @@ Semantic tokens — name by **role**, not by hue, so dark mode is a drop-in over
 
 | Token             | Light     | Role                                        |
 | ----------------- | --------- | ------------------------------------------- |
-| `--bg`            | `#f6f2e9` | Page background (warm paper)                |
-| `--surface`       | `#fbf8f1` | Cards, media wells, raised areas            |
-| `--text`          | `#241f1a` | Headings, name, strong emphasis             |
-| `--text-body`     | `#4a4339` | Default body copy                           |
-| `--text-muted`    | `#9b9384` | Captions, meta, labels                      |
-| `--border`        | `#e1d9c9` | Hairlines, dividers, card edges             |
-| `--accent`        | `#bf5700` | The one accent (UT Austin burnt orange)     |
-| `--accent-strong` | `#9c4700` | Link text — darker for AA contrast on light |
-| `--accent-light`  | `#f0e3d2` | Soft tint for subtle fills                  |
+| `--bg`            | `#f9f0de` | Page background (warm cream)                |
+| `--surface`       | `#fdf8ee` | Cards, media wells, raised areas            |
+| `--text`          | `#1a1714` | Headings, name, strong emphasis             |
+| `--text-body`     | `#2f2b27` | Default body copy                           |
+| `--text-muted`    | `#6b6358` | Captions, meta, labels                      |
+| `--border`        | `#eadcc2` | Hairlines, dividers, card edges             |
+| `--accent`        | `#0e7e33` | Method green (paper figures) — hover, emphasis |
+| `--accent-strong` | `#0b6a2b` | Link text — darker for AA contrast on light |
+| `--accent-light`  | `#dcefe0` | Soft tint for subtle fills                  |
 
 `--accent-strong` is the *link* shade (better contrast against the background);
 `--accent` is reserved for hover, emphasis, and active states. In dark mode the
-two swap relative lightness so links stay legible. `--klee-1/2/3` are the
-decorative earthy triad shared with the favicon and footer colophon.
+two swap relative lightness so links stay legible. `--swatches-1/2/3` are the
+decorative earthy triad for the footer colophon.
+
+Secondary text has 5.22:1 contrast on the light page background; link text
+(`--accent-strong`) has 5.96:1. Dark-mode secondary text (`#9a9387`) has 5.82:1
+on the page and 5.38:1 on raised surfaces. These pairs clear the 4.5:1 normal-text AA threshold.
 
 Dark values live in the `[data-theme="dark"]` block. `main.js` sets
 `data-theme` on `<html>` before first paint (default light; choice persisted to
@@ -58,20 +62,40 @@ Dark values live in the `[data-theme="dark"]` block. `main.js` sets
 
 ## Typography
 
-IBM Plex Sans for text, IBM Plex Mono for labels/meta (the small uppercase
-eyebrows, dates, tags). Four clear roles in the scale:
+Palatino (`--font-serif`) for main text, the name, publication titles, and author lists, matching
+the typeface used in Matthew's paper figures. It uses installed system fonts,
+with related serif faces and Georgia as fallbacks. IBM Plex Mono stays on labels/meta (the small uppercase eyebrows, dates,
+tags). Homepage sizes are overridden by `.home` in `theme.css` and mirrored in
+`typography.homepageScale` in `theme.json`. Four clear roles in the scale:
 
-- **Name** — `--fs-name` (1.8rem), tight tracking.
-- **Titles** — `--fs-title` (entry/publication titles).
-- **Body** — `--fs-body` (15.5px) at `--leading` 1.62; body width capped at
-  `760px` (`.wrap`) for comfortable line length.
-- **Captions / labels** — `--fs-caption`, `--fs-label`, `--fs-fine`.
+- **Name** — `--fs-name` (30px on the homepage), tight tracking.
+- **Titles** — `--fs-title` (17.5px, entry titles); `--fs-pub-title` (17px on
+  the homepage). Publication authors use `--fs-meta` (14px);
+  venues and paper links use `--fs-caption` (12px).
+- **Body** — introduction and news share `--fs-body` (16px on the homepage),
+  with line heights of 1.65 and 1.5 respectively. The homepage has an 860px
+  content width, with the introduction spanning the same width.
+  Publication media use a 200px column and 16px gap on desktop, following Ge
+  Yan's page proportions. Below 665px, media fill the content width above the
+  publication text. Videos use slightly taller 8:5 frames with a mild center
+  crop; diagram images keep their natural aspect ratios. Other pages retain
+  the 760px base wrapper or their own reading-width override.
+- **Captions / labels** — social links and email use `--fs-caption` (12px);
+  section headings, dates, and footer use `--fs-label` (11.5px).
+  Other pages retain the base typography scale.
+
+The homepage profile photo is 128px square. Its light/dark toggle is a 34px
+circle with a 14px symbol, growing to 44px on touch devices. The compact scale
+is based on https://geyan21.github.io/ while retaining the Palatino identity.
 
 ## Spacing system
 
 A 4px-based scale (`--space-2xs` … `--space-4xl`). Use these tokens for margins,
 padding, and gaps rather than raw pixels — that's what keeps vertical rhythm
 consistent across sections.
+
+The homepage tightens the larger spacing steps to 40px, 56px, and 64px; these
+overrides are mirrored in `homepageSpace` in `theme.json`.
 
 Also tokenized: `--radius-sm|--radius|--radius-pill`, `--shadow-sm|--shadow`
 (soft and low-contrast; the site is border-first, so shadows are opt-in via
