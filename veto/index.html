@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VETO — Early draft</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="static/img/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="VETO scores a robot policy's candidate action chunks with a small reward-supervised world model and vetoes the bad ones before they run, so RL fine-tuning spends fewer real trials.">
+  <meta property="og:title" content="VETO — Early draft">
+  <meta property="og:description" content="Temporary preview for collaborator feedback. Content and figures may change.">
+  <meta property="og:image" content="https://matthewh6.github.io/veto/static/video/hero_poster.jpg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@75..125,400..900&family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&family=Archivo:wght@700&display=swap">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="static/css/site.css">
+  <link rel="preload" as="image" href="static/video/hero_poster.jpg">
+  <script type="module" src="static/js/main.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#method">Skip to the content</a>
+<p role="note" style="margin:0;padding:10px 20px;background:#fff3cd;color:#493a0a;text-align:center;font:14px/1.5 var(--mono)"><strong>Early draft.</strong> Temporary preview for collaborator feedback. Content and figures may change.</p>
+
+<header class="hero" id="hero">
+  <div class="hero-stage">
+    <video class="hero-video" muted playsinline loop preload="auto" poster="static/video/hero_poster.jpg"
+      data-sd="static/video/hero_720.mp4" data-hd="static/video/hero_1080.mp4"
+      aria-label="A bimanual YAM robot unzipping a pencil case during a VETO run"></video>
+    <svg class="overlay" aria-hidden="true"></svg>
+  </div>
+  <div class="hero-text">
+    <h1 class="wordmark">VET<span class="sr-only">O</span><svg class="veto-o" viewBox="0 -75 79.3 80" aria-hidden="true" focusable="false"><path class="ring" d="M8.03 -18.16A35.5 35.5 0 0 1 55.79 -65.92L45.5 -55.63A20.3 22.28 0 0 0 19.75 -29.89ZM71.27 -50.44A35.5 35.5 0 0 1 23.51 -2.68L33.8 -12.97A20.3 22.28 0 0 0 59.55 -38.71Z"/><path class="cut" d="M14.3 0.6L74.55 -59.65L65 -69.2L4.75 -8.95Z"/></svg></h1>
+    <p class="title">Reward-supervised world models as action verifiers for sample-efficient RL</p>
+    <p class="authors">Skand Peri<sup>1,2*</sup>, Matthew M Hong<sup>1,2*</sup>, Chaoxiang Zhang<sup>2</sup>, Ross Worobel<sup>3</sup>, Suraj Shivakumar<sup>2</sup>, Dieter Fox<sup>2</sup>, Jesse Zhang<sup>2</sup>, Abhishek Gupta<sup>2</sup></p>
+    <p class="affils"><sup>1</sup>The University of Texas at Austin <sup>2</sup>University of Washington <sup>3</sup>University of Minnesota - Twin Cities <span class="note">* Equal contribution.</span></p>
+    <p class="hero-actions"><a class="hero-paper" href="static/veto.pdf">Read the paper <span aria-hidden="true">↗</span></a></p>
+  </div>
+  <div class="hero-foot">
+    <p class="counts">16 proposed, 4 kept, 1 picked at random</p>
+    <button class="pause" type="button" aria-pressed="false">Pause</button>
+    <p class="provenance"></p>
+  </div>
+</header>
+
+<div class="page-layout">
+<nav class="toc" aria-label="Table of contents">
+  <details class="toc-panel" open>
+    <summary>Contents</summary>
+    <div class="toc-body">
+      <ol class="toc-links">
+        <li><a class="toc-link" href="#method"><span>Method</span></a></li>
+        <li><a class="toc-link" href="#why"><span>Why VETO</span></a></li>
+        <li><a class="toc-link" href="#evidence"><span>Evidence</span></a></li>
+        <li><a class="toc-link" href="#results"><span>Simulation</span></a></li>
+        <li><a class="toc-link" href="#robots"><span>Robots</span></a></li>
+        <li><a class="toc-link" href="#ranking"><span>Action rankings</span></a></li>
+        <li><a class="toc-link" href="#cite"><span>Cite</span></a></li>
+      </ol>
+      <a class="toc-paper" href="static/veto.pdf">Paper (PDF)</a>
+    </div>
+  </details>
+</nav>
+
+<main>
+<section class="section band" id="method" aria-label="Method">
+  <figure class="method-anim">
+    <svg class="mfig mfig-wide" role="img" aria-label="One VETO decision step. The policy proposes N action chunks. The world model scores each one by rolling its latent state forward over the horizon and adding up the predicted reward. The top K are kept, one of them is drawn at random and runs in the environment, and a reward model labels the result for the replay buffer. Then the world model and the policy update separately."></svg>
+    <svg class="mfig mfig-tall" role="img" aria-label="One VETO decision step. The policy proposes N action chunks. The world model scores each one by rolling its latent state forward over the horizon and adding up the predicted reward. The top K are kept, one of them is drawn at random and runs in the environment, and a reward model labels the result for the replay buffer. Then the world model and the policy update separately."></svg>
+  </figure>
+  <div class="method-steps" role="group" aria-label="Steps of the animation"></div>
+  <p class="method-caption" aria-live="polite"></p>
+</section>
+
+<section class="section" id="why">
+  <h2>RL keeps repeating a mistake. A TD critic learns too slowly to stop it; VETO stops it after one try.</h2>
+  <figure class="why">
+    <div class="why-panels">
+      <div class="why-panel" data-side="unguided">
+        <h3>Unguided</h3>
+        <svg class="why-scene" viewBox="10 24 366 150" role="img" aria-label="Illustration: exploring unguided, the policy walks into the same dead end on eight of nine tries before it reaches the goal."></svg>
+        <p class="why-meter" aria-hidden="true"><span>what the policy has learned</span><i><b></b></i></p>
+        <p class="why-tally" aria-hidden="true">dead-end tries: <b>0</b></p>
+      </div>
+      <div class="why-panel" data-side="critic">
+        <h3>Ranked by a TD critic</h3>
+        <svg class="why-scene" viewBox="10 24 366 150" role="img" aria-label="Illustration: ranked by a TD critic, the policy walks into the same dead end on five tries before the critic has learned enough to steer it to the goal."></svg>
+        <p class="why-meter" aria-hidden="true"><span>what the critic has learned</span><i><b></b></i></p>
+        <p class="why-tally" aria-hidden="true">dead-end tries: <b>0</b></p>
+      </div>
+      <div class="why-panel" data-side="veto">
+        <h3>Ranked by VETO</h3>
+        <svg class="why-scene" viewBox="10 24 366 150" role="img" aria-label="Illustration: ranked by VETO, the policy walks into the dead end once; from then on VETO vetoes the dead end and the policy goes to the goal."></svg>
+        <p class="why-meter" aria-hidden="true"><span>what VETO has learned</span><i><b></b></i></p>
+        <p class="why-tally" aria-hidden="true">dead-end tries: <b>0</b></p>
+      </div>
+    </div>
+    <figcaption>Each line is one try from the same start; the star is the goal. An illustration of the mechanism, not a measured run. <button type="button" class="replay" aria-label="Replay the illustration">Replay</button></figcaption>
+  </figure>
+  <p>Unguided, the policy changes only as fast as RL retrains it: a failure has to pass through a TD critic and then the policy gradient before behavior changes, which the paper calls credit-assignment lag. Ranking the policy's proposals with the TD critic skips the second step, but a TD critic learns an action's value from the values of what follows it, so the news that the dead end fails still travels back slowly. VETO's world model learns rewards directly, from a reward model watching each try, so one failure is enough to recognize the move and veto it.</p>
+</section>
+
+<section class="section" id="evidence">
+  <h2>After 256 transitions, VETO recovers 87% of the best possible gain; a TD critic recovers 4.7%</h2>
+  <p>The same comparison, measured on PointMaze. Each verifier is trained on the same transitions, ranks 16 candidate chunks and keeps its top 4, and one of the four runs. The chart shows how much more return that pick earns than unguided exploration, a uniform pick from all 16. <b class="m qtd">Q-TD</b> is the TD critic.</p>
+  <figure class="chart-wrap">
+    <svg id="chart-gain" class="chart" role="img" aria-label="Return gain over uniform selection against transitions on PointMaze. VETO reaches 1.19 by 256 transitions; Q-TD stays near zero through 256."></svg>
+    <p class="chart-fallback">The chart data did not load. See Fig. 4 in the paper.</p>
+    <figcaption>PointMaze, 16 candidates, horizon 8, mean and SD over 3 seeds. The dotted line is an oracle that knows the true top four. This data has no VETO or Q-TD results between 0 and 256 transitions, so their lines start at 256; Fig. 4 in the paper plots those budgets. <button type="button" class="replay" aria-label="Replay the gain chart">Replay</button></figcaption>
+  </figure>
+</section>
+
+<section class="section wide" id="results">
+  <h2>Better rankings early, then faster RL</h2>
+  <p>In simulation, VETO sits on top of two noise-space RL methods, <b class="m dsrl">DSRL</b> and <b class="m tmrl">TMRL</b>, which steer a frozen flow policy. Rewards come from the simulator on Robomimic and from a video reward model on LIBERO.</p>
+  <figure class="tasks" aria-label="Demonstrations of the five online RL tasks, in plot order">
+    <div class="tasks-group">
+      <div class="tiles">
+        <figure class="task-tile" data-task-id="can">
+          <div class="task-pending"><span>Demonstration pending</span></div>
+          <figcaption><span class="name">Put the can in the bin</span><span class="kind">Robomimic Can</span></figcaption>
+        </figure>
+        <figure class="task-tile" data-task-id="square">
+          <div class="task-pending"><span>Demonstration pending</span></div>
+          <figcaption><span class="name">Place the square nut on the peg</span><span class="kind">Robomimic Square</span></figcaption>
+        </figure>
+        <figure class="task-tile" data-task-id="goal2">
+          <div class="task-preview">
+            <video id="vid-task-goal2" muted playsinline loop preload="none" data-src="static/video/libero/online_veto_goal2.mp4" poster="static/video/libero/online_veto_goal2.jpg" aria-label="Successful demonstration: Put the wine bottle on the cabinet."></video>
+            <img class="task-poster" src="static/video/libero/online_veto_goal2.jpg" alt="Put the wine bottle on the cabinet: initial frame" width="448" height="448" loading="lazy">
+            <button class="task-control" type="button" aria-controls="vid-task-goal2" aria-label="Play video: Put the wine bottle on the cabinet" aria-pressed="false" data-task="Put the wine bottle on the cabinet"></button>
+          </div>
+          <figcaption><span class="name">Put the wine bottle on the cabinet</span><span class="kind">LIBERO Goal-2</span></figcaption>
+        </figure>
+        <figure class="task-tile" data-task-id="goal6">
+          <div class="task-preview">
+            <video id="vid-task-goal6" muted playsinline loop preload="none" data-src="static/video/libero/online_veto_goal6.mp4" poster="static/video/libero/online_veto_goal6.jpg" aria-label="Successful demonstration: Put the cream cheese in the bowl."></video>
+            <img class="task-poster" src="static/video/libero/online_veto_goal6.jpg" alt="Put the cream cheese in the bowl: initial frame" width="448" height="448" loading="lazy">
+            <button class="task-control" type="button" aria-controls="vid-task-goal6" aria-label="Play video: Put the cream cheese in the bowl" aria-pressed="false" data-task="Put the cream cheese in the bowl"></button>
+          </div>
+          <figcaption><span class="name">Put the cream cheese in the bowl</span><span class="kind">LIBERO Goal-6</span></figcaption>
+        </figure>
+        <figure class="task-tile" data-task-id="spatial4">
+          <div class="task-pending"><span>Demonstration pending</span></div>
+          <figcaption><span class="name">Move the bowl from the drawer to the plate</span><span class="kind">LIBERO Spatial-4</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </figure>
+  <figure class="afig full" id="fig-7">
+    <ul class="afig-key" aria-label="Methods">
+      <li style="--c: var(--dsrl)"><svg viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6" stroke-dasharray="7 3 2 3"/><rect x="13.6" y="2.6" width="6.8" height="6.8"/></svg>DSRL</li>
+      <li style="--c: var(--veto)"><svg viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6"/><rect x="13.6" y="2.6" width="6.8" height="6.8"/></svg>VETO-DSRL</li>
+      <li style="--c: var(--tmrl)"><svg viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6" stroke-dasharray="6 4"/><path d="M17 1.4L21.4 9.4H12.6Z"/></svg>TMRL</li>
+      <li style="--c: var(--veto)"><svg viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6"/><path d="M17 1.4L21.4 9.4H12.6Z"/></svg>VETO-TMRL</li>
+      <li style="--c: var(--base)"><svg viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6" stroke-dasharray="1 3"/></svg>Base policy</li>
+    </ul>
+    <div class="afig-panels cols-5">
+      <svg class="chart" role="img" aria-label="Robosuite Can: success rate against environment steps; at 100,000 steps VETO-DSRL 78% and DSRL 63%; the base policy 55%."></svg>
+      <svg class="chart" role="img" aria-label="Robosuite Square: success rate against environment steps; at 100,000 steps VETO-DSRL 70% and DSRL 60%; the base policy 50%."></svg>
+      <svg class="chart" role="img" aria-label="LIBERO Goal-2: success rate against environment steps; at 500,000 steps VETO-TMRL 95%, VETO-DSRL 0%, TMRL 69% and DSRL 0%; the base policy 31%."></svg>
+      <svg class="chart" role="img" aria-label="LIBERO Goal-6: success rate against environment steps; at 500,000 steps VETO-TMRL 78%, VETO-DSRL 6%, TMRL 44% and DSRL 0%; the base policy 43%."></svg>
+      <svg class="chart" role="img" aria-label="LIBERO Spatial-4: success rate against environment steps; at 500,000 steps VETO-TMRL 61%, VETO-DSRL 23%, TMRL 33% and DSRL 0%; the base policy 48%."></svg>
+    </div>
+    <img class="afig-fallback" src="static/img/paper/fig7.webp" alt="Paper Fig. 7: success rate against environment steps on Can, Square, Goal-2, Goal-6 and Spatial-4 for the base policy, DSRL, TMRL, Newt, FOWM, Dyna, Q-BoN, VETO-DSRL and VETO-TMRL" width="2200" height="600" loading="lazy">
+    <figcaption>Fig. 7. Success rate against environment steps for <b class="m veto">VETO</b> on top of <b class="m dsrl">DSRL</b> and <b class="m tmrl">TMRL</b>, against each on its own; the dotted line is the base policy, and the LIBERO curves are smoothed, as in the paper. VETO improves on both. The paper's Fig. 7 also compares Newt, FOWM, Dyna and Q-BoN. <button type="button" class="replay" aria-label="Replay Fig. 7">Replay</button></figcaption>
+  </figure>
+</section>
+
+<section class="section band" id="robots">
+  <h2>About 2.5× the success of unguided collection on real robots</h2>
+  <p>The real-robot runs use iterative behavior cloning on the flow noise of large frozen policies (DSBC): collect episodes, refit a small noise policy on the successes, repeat. With and without VETO, everything else is the same.</p>
+  <h3>Bimanual YAM: unzip a pencil case, put a pen in, zip it</h3>
+  <p>The base policy is Flex-π, a 6B world-action model. After 10 warmup episodes, each strategy collects 60 more, with rewards from Robometer.</p>
+  <div class="pair">
+    <figure>
+      <video id="vid-veto-pair" muted playsinline loop preload="none" data-src="static/video/hero_720.mp4" poster="static/video/hero_poster.jpg" aria-label="A VETO run on the pencil-case task"></video>
+      <figcaption><b class="m veto">VETO</b></figcaption>
+    </figure>
+    <figure>
+      <video id="vid-unguided-pair" muted playsinline loop preload="none" data-src="static/video/unguided_720.mp4" poster="static/video/unguided_poster.jpg" aria-label="An unguided run on the pencil-case task"></video>
+      <figcaption>Without VETO</figcaption>
+    </figure>
+  </div>
+  <p class="pair-controls"><button type="button" data-toggle="vid-veto-pair vid-unguided-pair" aria-pressed="false">Pause</button></p>
+  <h3>Franka (DROID): take a bowl out of a dish rack</h3>
+  <p>The base policy is π<sub>0</sub>. It often grabs the rack or a nearby object instead of the bowl and starts at 20% success. After 10 warmup episodes, each strategy collects 20 more.</p>
+  <figure class="afig" id="fig-9">
+    <div class="afig-rows">
+      <div class="afig-row">
+        <svg class="chart" role="img" aria-label="YAM with Flex-π, 20 trials per point: unguided collection goes from 20% to 25% over 70 episodes; VETO from 20% to 55%."></svg>
+        <img class="afig-photo" src="static/img/paper/fig9_yam.webp" alt="The bimanual YAM setup: two arms over the pencil case" width="381" height="378" loading="lazy">
+      </div>
+      <div class="afig-row">
+        <svg class="chart" role="img" aria-label="DROID with π0, 10 trials per point: unguided collection goes from 20% to 20% over 30 episodes; VETO from 20% to 60%."></svg>
+        <img class="afig-photo" src="static/img/paper/fig9_droid.webp" alt="The DROID Franka setup: the dish rack, the bowl and the mat" width="381" height="378" loading="lazy">
+      </div>
+    </div>
+    <img class="afig-fallback" src="static/img/paper/fig9.webp" alt="Paper Fig. 9: success rate after each round of refitting, VETO against unguided collection, on YAM and DROID" width="1021" height="1125" loading="lazy">
+    <figcaption>Fig. 9. Success rate after each round of refitting. Top: YAM with Flex-π, 20 trials per point. Bottom: DROID with π<sub>0</sub>, 10 trials per point. <button type="button" class="replay" aria-label="Replay Fig. 9">Replay</button></figcaption>
+  </figure>
+</section>
+
+<section class="section wide" id="ranking">
+  <h2>Watch the action rankings change as data arrives</h2>
+  <p>The same PointMaze state and 16 candidate action chunks, scored by three verifiers trained on increasing amounts of data. The paths stay fixed. The highlighted lines are each verifier's top four; the star is the goal.</p>
+  <figure class="ranking" id="maze">
+    <div class="ranking-ui">
+      <div class="ranking-controls">
+        <label for="ranking-budget">Training examples <span>(environment transitions)</span></label>
+        <output class="ranking-readout" for="ranking-budget">0</output>
+        <input id="ranking-budget" type="range" min="0" max="13" step="1" value="0" aria-describedby="ranking-note">
+        <div class="ranking-buttons">
+          <button type="button" class="ranking-play" aria-label="Play the PointMaze ranking animation" aria-pressed="false">Play</button>
+          <button type="button" class="ranking-replay" aria-label="Replay the PointMaze ranking animation">Replay</button>
+          <span class="ranking-status">Measured fit 1 of 14</span>
+        </div>
+      </div>
+      <div class="ranking-panels">
+        <div class="ranking-panel" data-verifier="VETO" style="--method-color: var(--veto)">
+          <h3>VETO</h3><p>Reward-supervised world model</p>
+          <svg role="img" aria-label="VETO's four selected candidate paths, highlighted over all sixteen recorded paths. The circle is the start and the star is the goal."></svg>
+        </div>
+        <div class="ranking-panel" data-verifier="Q-TD" style="--method-color: var(--qtd-text)">
+          <h3>Q-TD</h3><p>TD critic</p>
+          <svg role="img" aria-label="The TD critic's four selected candidate paths, highlighted over the same sixteen recorded paths."></svg>
+        </div>
+        <div class="ranking-panel" data-verifier="H-return" style="--method-color: var(--tmrl)">
+          <h3>H-return</h3><p>Direct return predictor</p>
+          <svg role="img" aria-label="The direct return predictor's four selected candidate paths, highlighted over the same sixteen recorded paths."></svg>
+        </div>
+      </div>
+    </div>
+    <p class="ranking-fallback">The interactive figure is unavailable. <a href="static/data/pointmaze/source.zip">Download the recorded data and standalone preview</a>.</p>
+    <figcaption id="ranking-note">A selected seed-0 scene, horizon 32. Each stop is a separate fit on a larger prefix of the same data. The slider visits measured counts; between stops, only the highlights fade. Scores, ranks and paths are unchanged.</figcaption>
+  </figure>
+  <details class="ranking-notes">
+    <summary>Data and provenance</summary>
+    <p>This is an illustrative scene, not an aggregate result or a recording of one model training continuously. The 4,096-example fit was selected as the first tested prefix where all three methods chose the true top four. The export includes all 14 available fits through 5,096 examples. <a href="static/data/pointmaze/ranking.json">Recorded scores and paths</a> · <a href="static/data/pointmaze/source.zip">Source archive and standalone preview</a>.</p>
+  </details>
+</section>
+
+<section class="section" id="cite">
+  <h2>Cite</h2>
+  <div class="bib">
+    <pre id="bibtex">@misc{peri2026veto,
+  title  = {VETO: Reward-Supervised World Models as Action Verifiers for Sample-Efficient RL},
+  author = {Peri, Skand and Hong, Matthew M and Zhang, Chaoxiang and Worobel, Ross and Shivakumar, Suraj and Fox, Dieter and Zhang, Jesse and Gupta, Abhishek},
+  year   = {2026},
+  note   = {Submitted to ICLR 2027}
+}</pre>
+    <button id="copy-bib" type="button">Copy</button>
+  </div>
+</section>
+</main>
+
+</div>
+</body>
+</html>

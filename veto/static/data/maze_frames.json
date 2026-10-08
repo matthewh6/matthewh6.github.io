@@ -1,0 +1,9 @@
+{
+  "source": "Panels of the paper's Fig. 2, cropped from the PDF: one PointMaze state, horizon 32, seed 0.",
+  "frames": [
+    {"x": 0, "src": "static/img/paper/fig2_t0.webp", "alt": "Before any data, no verifier's picks head toward the goal: VETO's point down a side corridor, Q-TD's and H-return's point left."},
+    {"x": 32, "src": "static/img/paper/fig2_t32.webp", "alt": "With 32 transitions, three of VETO's four picks head toward the goal while Q-TD and H-return still pick chunks heading left."},
+    {"x": 64, "src": "static/img/paper/fig2_t64.webp", "alt": "With 64 transitions, three of VETO's four picks head toward the goal while Q-TD and H-return pick chunks heading down and left."},
+    {"x": 4096, "src": "static/img/paper/fig2_t4096.webp", "alt": "With 4096 transitions, all three verifiers pick chunks toward the goal."}
+  ]
+}

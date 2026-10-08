@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "output": {
+    "width": 448,
+    "height": 448,
+    "fps": 15,
+    "videoCodec": "H.264",
+    "pixelFormat": "yuv420p",
+    "audio": false,
+    "fastStart": true,
+    "crf": 18,
+    "filter": "Lanczos upscale; eq brightness=0.025, gamma=1.10, contrast=1.035, saturation=1.02",
+    "lightingNote": "Post-processing only; simulator lighting, observations, and trajectories were not changed."
+  },
+  "clips": [
+    {
+      "file": "sft_goal2.mp4",
+      "poster": "sft_goal2.jpg",
+      "task": "LIBERO Goal-2",
+      "experiment": "one-success critic-SFT",
+      "policyStage": "deterministic post-SFT evaluation",
+      "seed": 1,
+      "placementSeed": 1073741824,
+      "steps": 70,
+      "success": true,
+      "reconstructed": true,
+      "source": "exports/media/goal2_one_success/videos/after_sft/eval_step7_env0.mp4",
+      "sourceMetadata": "exports/media/goal2_one_success/videos/after_sft/eval_step7_env0.json",
+      "replayAudit": "exports/media/goal2_one_success/verification.json",
+      "provenanceNote": "Original round-1 checkpoint and video were unavailable. This is a reconstructed evaluation; replay inputs match the production record exactly for observations, action noise, timesteps, rewards, terminals, and trajectory metadata."
+    },
+    {
+      "file": "online_veto_goal2.mp4",
+      "poster": "online_veto_goal2.jpg",
+      "task": "LIBERO Goal-2",
+      "experiment": "goal2_sac_wmga_fresh_s1_stock",
+      "policyStage": "VETO/WMGA online collection policy",
+      "seed": 1,
+      "round": 50,
+      "success": true,
+      "wandbStep": 196499,
+      "sourceRun": "run-20260917_032948-yj4bmafh",
+      "source": "wandb/run-20260917_032948-yj4bmafh/files/media/videos/collect/r50/video_success_196499_7a571ad18460088b6aff.mp4"
+    },
+    {
+      "file": "online_veto_goal6.mp4",
+      "poster": "online_veto_goal6.jpg",
+      "task": "LIBERO Goal-6",
+      "experiment": "r10ri wmga_sc5",
+      "policyStage": "VETO/WMGA online collection policy",
+      "seed": 1,
+      "round": 49,
+      "success": true,
+      "wandbStep": 879417,
+      "sourceRun": "run-20260906_120355-l9jfp2n8",
+      "source": "exports/media/collection_examples/goal6_r10ri_wmga_sc5_s1_collection_r49_success_step879417.mp4",
+      "sourceSha256": "bed83ffb16d8bdfd659a0cdfe7bc3b7b35fcd06d3a50cbce187a1c9ead728ec2"
+    },
+    {
+      "file": "online_veto_spatial9.mp4",
+      "poster": "online_veto_spatial9.jpg",
+      "task": "LIBERO Spatial-9",
+      "experiment": "r10ri wmga_sc5",
+      "policyStage": "VETO/WMGA online collection policy",
+      "seed": 1,
+      "round": 45,
+      "success": true,
+      "wandbStep": 795108,
+      "sourceRun": "run-20260906_121253-ulp7dpgj",
+      "source": "exports/media/collection_review/spatial9_wmga_sc5_s1_r45_video_success_795108_9531556a8a558cc43295.mp4",
+      "manifest": "exports/media/collection_review/manifest.json"
+    }
+  ]
+}

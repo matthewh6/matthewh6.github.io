@@ -1,0 +1,32 @@
+{
+  "rankingJsonSha256": "65882c88aaeca3f153b8bddc5ce42cc7e10e964637076dd07f2964daff62dee7",
+  "inputSha256": {
+    "source/junction32_view/evaluation.npz": "360dae014cdd7406b13e93b3d01966a1e5f2c8356fa31736286ffc79e6e11fe8",
+    "source/source_metadata.json": "f088ad11695d50af5d24da873759ea9e799324426a3b0af936e0d051d8b3e104",
+    "source/junction32_view/predictions_n0.npz": "b928db0acea94f956bf378e9453223274ba9942d187e16bd429ff08bc657da5c",
+    "source/junction32_view/predictions_n16.npz": "3181ebfb13b5174e49a0a3608f4465caf71ebe291e32c2343f6c2190c8ad90df",
+    "source/junction32_view/predictions_n32.npz": "04c643705fda70f1fc78ec6efe727c3409ee2f561646ebd3dfb6a465a237a541",
+    "source/junction32_view/predictions_n64.npz": "471c2b2b5ac9f9e48bc6f64ab8d7a4e7f3fabeff2c78f111981cdda5a4991bca",
+    "source/junction32_view/predictions_n128.npz": "3650d0b7df507b6bc04a10cd739b48c8089949761f674f09f092397da76da161",
+    "source/junction32_view/predictions_n256.npz": "16c3b12c9e1d435fe09b20b72499487b01e5075abe9b33324006704e6fc0ac2b",
+    "source/junction32_view/predictions_n512.npz": "66306e809a0840f9e7d63de4a3b47e1faf97c54f3feddb4118acd54ab656889f",
+    "source/junction32_view/predictions_n768.npz": "cd0ab3f2d9b1d2d6b8cd73212be21c19e08a56a19df2f3331ba717ec7efd16c2",
+    "source/junction32_view/predictions_n1024.npz": "39955d9c70cec76bd7dc3c9c351b2e2f3bf70934b6ada981c1301011533daaa9",
+    "source/junction32_view/predictions_n1280.npz": "96b9e76d9b9fae3c581e6d2de02a1795f8dd058f414a785f92293e3878978993",
+    "source/junction32_view/predictions_n2048.npz": "5c06686afa1d6184308c90dc61fb97e23594e74b16688d21164ab2e899c5f330",
+    "source/junction32_view/predictions_n2304.npz": "7f7b83faa9eb506ded7cdf1c33d74144e325c9268127065e1757bf38c74e343b",
+    "source/junction32_view/predictions_n4096.npz": "9fd66f9be04b13c6315d29b26c4ce92f7d5f797f2e9bf2c04a34180630785d48",
+    "source/junction32_view/predictions_n5096.npz": "dcfbc408b5d9b5557148a8f82d64b780f0f757770d9b589c1c86eb7006a04222"
+  },
+  "checks": {
+    "candidateCount": 16,
+    "pathShape": [
+      16,
+      33,
+      2
+    ],
+    "allBudgetsPresent": true,
+    "allMethodsHave16ScoresAndRanks": true,
+    "oracleReturnsDistinct": true
+  }
+}

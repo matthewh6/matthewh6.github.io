@@ -1,0 +1,69 @@
+{
+  "name": "VETO",
+  "expansion": "Verifying Exploratory Trajectories Online",
+  "title": "VETO: Reward-Supervised World Models as Action Verifiers for Sample-Efficient RL",
+  "status": "Submitted to ICLR 2027",
+  "authors": [
+    {
+      "name": "Skand Peri",
+      "affiliation": [
+        "ut-austin",
+        "uw"
+      ],
+      "equalContribution": true
+    },
+    {
+      "name": "Matthew M Hong",
+      "affiliation": [
+        "ut-austin",
+        "uw"
+      ],
+      "equalContribution": true
+    },
+    {
+      "name": "Chaoxiang Zhang",
+      "affiliation": "uw",
+      "equalContribution": false
+    },
+    {
+      "name": "Ross Worobel",
+      "affiliation": "umn",
+      "equalContribution": false
+    },
+    {
+      "name": "Suraj Shivakumar",
+      "affiliation": "uw",
+      "equalContribution": false
+    },
+    {
+      "name": "Dieter Fox",
+      "affiliation": "uw",
+      "equalContribution": false
+    },
+    {
+      "name": "Jesse Zhang",
+      "affiliation": "uw",
+      "equalContribution": false
+    },
+    {
+      "name": "Abhishek Gupta",
+      "affiliation": "uw",
+      "equalContribution": false
+    }
+  ],
+  "affiliations": [
+    {
+      "id": "ut-austin",
+      "name": "The University of Texas at Austin"
+    },
+    {
+      "id": "uw",
+      "name": "University of Washington"
+    },
+    {
+      "id": "umn",
+      "name": "University of Minnesota - Twin Cities"
+    }
+  ],
+  "contributionNote": "* Equal contribution."
+}
